@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Greeter</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+
+    <style>
+      *{font-size:1.5em;}
+
+      button{
+        width: 150px;
+        height: 50px;
+        font-size: 14pt;
+      }
+      p{
+        font-family: 'Share Tech Mono', monospace;
+      }
+
+      @media only screen and (min-width: 1024px){
+        body{
+          background-color: red;
+          padding: 100px;
+        }
+      }
+    </style>
+
+    <script>
+      'use strict';
+  
+  
+      // 1 - get a reference to the button
+      //let button = document.querySelector("button");
+      // 2 - add a click event to button that calls a `sayHello` function
+      //button.onclick = sayHello;
+      // 3 - create a `sayHello()` function
+      // 3A - get name of person from the <input>
+      // 3B - get a reference to the #output <p>
+      // 3C - update HTML of #output <p>
+     window.onload = init;
+
+      function sayHello(){
+          let firstNameInput = document.querySelector("#input-firstname");
+          let lastNameInput = document.querySelector("#input-lastname");
+          let output = document.querySelector("#output");
+  
+          let firstName = firstNameInput.value.trim();
+          let lastName = lastNameInput.value.trim();
+
+          if(!firstName){
+            firstName = "Peter"
+          }
+
+          if(!lastName){
+            lastName = "Parker"
+          }
+
+          
+  
+          output.innerHTML = `Hello ${firstName} ${lastName}!`;
+      }
+
+      function sayGoodbye(){
+        let firstNameInput = document.querySelector("#input-firstname");
+          let lastNameInput = document.querySelector("#input-lastname");
+          let output = document.querySelector("#output");
+  
+          let firstName = firstNameInput.value.trim();
+          let lastName = lastNameInput.value.trim();
+
+          if(!firstName){
+            firstName = "Peter"
+          }
+
+          if(!lastName){
+            lastName = "Parker"
+          }
+
+          output.innerHTML = `Goodbye ${firstName} ${lastName}!`;
+      }
+  
+      function init(){
+          const helloButton = document.querySelector("#btn-hello");
+          helloButton.onclick = sayHello;
+
+          const goodbyeButton = document.querySelector("#btn-goodbye");
+          goodbyeButton.onclick = sayGoodbye;
+
+
+          let output = document.querySelector("#output");
+          output.style.color = "red";
+          output.style.backgroundColor = "yellow";
+
+      }
+      </script>
+  </head>
+
+
+<body>
+  <button id = "btn-hello">Hello!</button>
+  <button id = "btn-goodbye">Goodbye</button>
+  <br>
+  <input id="input-firstname" placeholder="Type in your first name">
+  <br>
+  <input id="input-lastname" placeholder="Type in your last name">
+  <br>
+  <p id="output">???</p>
+
+  
+</body>
+</html>
