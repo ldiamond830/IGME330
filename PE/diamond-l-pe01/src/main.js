@@ -1,33 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-	<title>Technobabble Generator</title>
-	<style>
-        body{
-            font-size: larger;
-            align-items: center;
-        }
-        @media only screen and (max-width: 500px){
-            body{
-                
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                
-                margin-top: 30%;
-                
-                
-            }
 
-            button{
-                border-radius: 12px;
-            }
-        }
-
-    </style>
-	<script>
 	"use strict";
 	
 	const words1 = ["Acute", "Aft", "Anti-matter", "Bipolar", "Cargo", "Command", "Communication", "Computer", "Deuterium", "Dorsal", "Emergency", "Engineering", "Environmental", "Flight", "Fore", "Guidance", "Heat", "Impulse", "Increased", "Inertial", "Infinite", "Ionizing", "Isolinear", "Lateral", "Linear", "Matter", "Medical", "Navigational", "Optical", "Optimal", "Optional", "Personal", "Personnel", "Phased", "Reduced", "Science", "Ship's", "Shuttlecraft", "Structural", "Subspace", "Transporter", "Ventral"];
@@ -58,20 +29,10 @@
         //attaches printBable to the button's click event
         printButton.onclick = printBabble;
 
-       //the three arrays all have the same length so the same index can be used for each
-       let index = array[Math.floor(Math.random() * words1.length)];
-
+       
 
 
     }
 
     
 	
-</script>
-</head>
-<body>
-<p id="output">Loading...</p>
-<button id="myButton">More Technobabble!</button>
-	
-</body>
-</html>
