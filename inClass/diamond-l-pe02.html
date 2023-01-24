@@ -39,7 +39,7 @@
       // 3A - get name of person from the <input>
       // 3B - get a reference to the #output <p>
       // 3C - update HTML of #output <p>
-     window.onload = init;
+     
 
      //takes in a value from HTML input elements and prints a different greeting to the page based value of greeting
       let greet = (greeting) =>{
@@ -86,7 +86,7 @@
           output.innerHTML = message;
       }
      //assigns functions to buttons and style to output
-      function init(){
+      let init = () =>{
         //ties greet function to button and gives different parameter for each
           const helloButton = document.querySelector("#btn-hello");
           helloButton.onclick = () => greet("hello");
@@ -101,6 +101,9 @@
           output.style.backgroundColor = "yellow";
 
       }
+
+
+      window.onload = init;
       </script>
   </head>
 
