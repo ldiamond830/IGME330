@@ -31,8 +31,6 @@
 
     <script>
       'use strict';
-  
-  
       // 1 - get a reference to the button
       //let button = document.querySelector("button");
       // 2 - add a click event to button that calls a `sayHello` function
@@ -43,55 +41,62 @@
       // 3C - update HTML of #output <p>
      window.onload = init;
 
-      function sayHello(){
+     //takes in a value from HTML input elements and prints a different greeting to the page based value of greeting
+      let greet = (greeting) =>{
+        //storing DOM elements
           let firstNameInput = document.querySelector("#input-firstname");
           let lastNameInput = document.querySelector("#input-lastname");
           let output = document.querySelector("#output");
   
+          //takes input from HTML elements and trims off any extra spaces
           let firstName = firstNameInput.value.trim();
           let lastName = lastNameInput.value.trim();
 
+          //checks for empty first and last name
           if(!firstName){
             firstName = "Peter"
           }
+          // alternate using ternary opperator
+          //basically evaluates if firstName is empty which means it would be false in a boolean context and if so sets it to "Peter"
+          //firstName = firstName ? firstName : "Peter"
 
           if(!lastName){
             lastName = "Parker"
           }
 
           
-  
-          output.innerHTML = `Hello ${firstName} ${lastName}!`;
-      }
-
-      function sayGoodbye(){
-        let firstNameInput = document.querySelector("#input-firstname");
-          let lastNameInput = document.querySelector("#input-lastname");
-          let output = document.querySelector("#output");
-  
-          let firstName = firstNameInput.value.trim();
-          let lastName = lastNameInput.value.trim();
-
-          if(!firstName){
-            firstName = "Peter"
+          
+          let message = "";
+          //assigns output message based on which button was pressed
+          if(greeting == "hello"){
+            message = `Hello ${firstName} ${lastName}!`;
           }
 
-          if(!lastName){
-            lastName = "Parker"
+          if(greeting == "goodbye"){
+            message = `Goodbye ${firstName} ${lastName}!`;
+          }
+          
+          //gets the checkbox element and puts the message in all caps if it is checked
+          let checkbox = document.querySelector("#shoutify");
+          if(checkbox.checked){
+           message = message.toUpperCase();
           }
 
-          output.innerHTML = `Goodbye ${firstName} ${lastName}!`;
+          //prints message to the web page
+          output.innerHTML = message;
       }
-  
+     //assigns functions to buttons and style to output
       function init(){
+        //ties greet function to button and gives different parameter for each
           const helloButton = document.querySelector("#btn-hello");
-          helloButton.onclick = sayHello;
-
+          helloButton.onclick = () => greet("hello");
+          
           const goodbyeButton = document.querySelector("#btn-goodbye");
-          goodbyeButton.onclick = sayGoodbye;
+          goodbyeButton.onclick = ()=> greet("goodbye");
 
 
           let output = document.querySelector("#output");
+          //sets style of output
           output.style.color = "red";
           output.style.backgroundColor = "yellow";
 
@@ -103,10 +108,14 @@
 <body>
   <button id = "btn-hello">Hello!</button>
   <button id = "btn-goodbye">Goodbye</button>
+
+  
   <br>
   <input id="input-firstname" placeholder="Type in your first name">
   <br>
   <input id="input-lastname" placeholder="Type in your last name">
+  <br>
+  <input type="checkbox" id = "shoutify"><label for="shoutify"> Shoutify</label><br>
   <br>
   <p id="output">???</p>
 
