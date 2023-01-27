@@ -28,20 +28,22 @@
         document.querySelector("#my-button").onclick = loadTextXHR;
 
         function loadTextXHR(){
-            const url = "data/pet-names.csv";
+            const url = "data/pet-names.xml";
             const xhr = new XMLHttpRequest();
 
             xhr.onload = (e) =>{
                 console.log(`In onload - HTTP status code = ${e.target.status}`);
-                const text = e.target.responseText;
-                console.log(`Success - the file length is ${text.length}`);
+                const xml = e.target.responseXML;
 
-				const lines = text.split("\n");
+				//guard code
+				if(!xml){
+					document.querySelector("#output").innerHTML = "ERROR: XML is null"
+				}
+
+				const dogNames = xml.querySelector("namelist[cid=dognames]").textContent.split(",");
+				const catNames = xml.querySelector("namelist[cid=catnames]").textContent.split(",");
+				const birdNames = xml.querySelector("namelist[cid=birdnames]").textContent.split(",");
 				
-				const dogNames = lines[0].split(",");
-				const catNames = lines[1].split(",");
-				const birdNames = lines[2].split(",")
-
 				const dogHtml = dogNames.map(w => `<li>${w}</li>`).join("");
 				const catHtml = catNames.map(w => `<li>${w}</li>`).join("");
 				const birdHtml = birdNames.map(w => `<li>${w}</li>`).join("");
@@ -58,6 +60,7 @@
 				`;
 
 				document.querySelector("#output").innerHTML =htmlOutPut;
+				
             };
             xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);
             xhr.open("GET", url);
