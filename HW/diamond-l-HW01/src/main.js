@@ -38,7 +38,7 @@
 
     const generateFive = () => generateTechno(5);
 
-    function init(){
+    const init = () =>{
         //get references to button
         const printOneButton = document.querySelector("#print-one-button");
 
