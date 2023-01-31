@@ -1,4 +1,4 @@
-
+    import {randomElement} from "./utils.js";
 	
 	
 	const words1 = ["Acute", "Aft", "Anti-matter", "Bipolar", "Cargo", "Command", "Communication", "Computer", "Deuterium", "Dorsal", "Emergency", "Engineering", "Environmental", "Flight", "Fore", "Guidance", "Heat", "Impulse", "Increased", "Inertial", "Infinite", "Ionizing", "Isolinear", "Lateral", "Linear", "Matter", "Medical", "Navigational", "Optical", "Optimal", "Optional", "Personal", "Personnel", "Phased", "Reduced", "Science", "Ship's", "Shuttlecraft", "Structural", "Subspace", "Transporter", "Ventral"];
@@ -9,7 +9,7 @@
 
 
    
-
+    //generates a 3 word technobabble phrase as many times as specified by the parameter and outputs to the HTML element
     const generateTechno = (num) =>{
         
         
@@ -18,13 +18,13 @@
          for(let i =0; i < num; i++)
          {
             //the three arrays all have the same length so the same index can be used for each
-            let index = Math.floor(Math.random() * words1.length);
+            let index = randomElement(words1.length);
 
             let currentTecho = `${words1[index]} ${words2[index]} ${words3[index]}`;
             completeTechno += currentTecho;
 
             if(num > 1){
-                completeTechno += " ";
+                completeTechno += "\n";
             }
          }
          
@@ -33,6 +33,7 @@
         //console.log("call");
     }
 
+    //wrapper functions for calling generate techno with different parameters
     const generateOne = () => generateTechno(1);
     
 
@@ -42,8 +43,10 @@
         //get references to buttons
         const printOneButton = document.querySelector("#print-one-button");
         const printFiveButton = document.querySelector("#print-five-button");
-        //calls print babble intially to have some starting text
+
+        //calls method on load to have some starting text
         generateOne();
+
         //attaches printBable to the button's click event
         printOneButton.onclick = generateOne;
         printFiveButton.onclick = generateFive;
@@ -53,7 +56,7 @@
 
     }
 
-    window.onload = init;
+    init();
 
     
 	
