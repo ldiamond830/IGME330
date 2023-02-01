@@ -33,6 +33,27 @@
         //console.log("call");
     }
 
+    const populateArrays = () =>{
+        const url = "data/babble.json";
+        const xhr = new XMLHttpRequest();
+
+        xhr.onload = (e) =>{
+            console.log(`In onload - HTTP status code = ${e.target.status}`);
+            const xml = e.target.responseXML;
+
+            //guard code
+            if(!xml){
+                document.querySelector("#output").innerHTML = "ERROR: XML is null"
+            }
+
+
+            
+        };
+        xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);
+        xhr.open("GET", url);
+        xhr.send();
+
+    }
     //wrapper functions for calling generate techno with different parameters
     const generateOne = () => generateTechno(1);
     
