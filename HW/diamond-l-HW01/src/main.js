@@ -1,11 +1,11 @@
     import {randomElement} from "./utils.js";
 	
 	
-	const words1 = ["Acute", "Aft", "Anti-matter", "Bipolar", "Cargo", "Command", "Communication", "Computer", "Deuterium", "Dorsal", "Emergency", "Engineering", "Environmental", "Flight", "Fore", "Guidance", "Heat", "Impulse", "Increased", "Inertial", "Infinite", "Ionizing", "Isolinear", "Lateral", "Linear", "Matter", "Medical", "Navigational", "Optical", "Optimal", "Optional", "Personal", "Personnel", "Phased", "Reduced", "Science", "Ship's", "Shuttlecraft", "Structural", "Subspace", "Transporter", "Ventral"];
+	let words1;
 	
-	const words2 = ["Propulsion", "Dissipation", "Sensor", "Improbability", "Buffer", "Graviton", "Replicator", "Matter", "Anti-matter", "Organic", "Power", "Silicon", "Holographic", "Transient", "Integrity", "Plasma", "Fusion", "Control", "Access", "Auto", "Destruct", "Isolinear", "Transwarp", "Energy", "Medical", "Environmental", "Coil", "Impulse", "Warp", "Phaser", "Operating", "Photon", "Deflector", "Integrity", "Control", "Bridge", "Dampening", "Display", "Beam", "Quantum", "Baseline", "Input"];
+	let words2;
 	
-	const words3 = ["Chamber", "Interface", "Coil", "Polymer", "Biosphere", "Platform", "Thruster", "Deflector", "Replicator", "Tricorder", "Operation", "Array", "Matrix", "Grid", "Sensor", "Mode", "Panel", "Storage", "Conduit", "Pod", "Hatch", "Regulator", "Display", "Inverter", "Spectrum", "Generator", "Cloud", "Field", "Terminal", "Module", "Procedure", "System", "Diagnostic", "Device", "Beam", "Probe", "Bank", "Tie-In", "Facility", "Bay", "Indicator", "Cell"];
+	let words3;
 
 
    
@@ -20,12 +20,10 @@
             //the three arrays all have the same length so the same index can be used for each
             let index = randomElement(words1.length);
 
-            let currentTecho = `${words1[index]} ${words2[index]} ${words3[index]}`;
+            let currentTecho = `${words1[index]} ${words2[index]} ${words3[index]}<br>`;
             completeTechno += currentTecho;
 
-            if(num > 1){
-                completeTechno += "\n";
-            }
+            
          }
          
          document.querySelector("#output").innerHTML = completeTechno; 
@@ -33,27 +31,35 @@
         //console.log("call");
     }
 
+
+    //gets data from external JSON file and parses it to be stored in the three arrays
     const populateArrays = () =>{
         const url = "data/babble.json";
         const xhr = new XMLHttpRequest();
 
         xhr.onload = (e) =>{
             console.log(`In onload - HTTP status code = ${e.target.status}`);
-            const xml = e.target.responseXML;
+            const json = e.target.responseText;
 
-            //guard code
-            if(!xml){
-                document.querySelector("#output").innerHTML = "ERROR: XML is null"
-            }
+            //converts Json to string
+            const jsonString = JSON.parse(json);
+
+            words1 = jsonString.words1;
+            words2 = jsonString.words2;
+            words3 = jsonString.words3;
 
 
-            
+            //calls method on load to have some starting text
+            generateOne();
         };
         xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);
         xhr.open("GET", url);
         xhr.send();
 
+        
+
     }
+
     //wrapper functions for calling generate techno with different parameters
     const generateOne = () => generateTechno(1);
     
@@ -65,8 +71,10 @@
         const printOneButton = document.querySelector("#print-one-button");
         const printFiveButton = document.querySelector("#print-five-button");
 
-        //calls method on load to have some starting text
-        generateOne();
+        //pulls data from arrays and prints initial babble to the page
+        populateArrays();
+
+        
 
         //attaches printBable to the button's click event
         printOneButton.onclick = generateOne;
