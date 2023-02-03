@@ -34,6 +34,7 @@
             xhr.onload = (e) =>{
                 console.log(`In onload - HTTP status code = ${e.target.status}`);
                 const string = e.target.responseText;
+				console.log(e.target);
 
 				const json = JSON.parse(string);
 				
