@@ -13,8 +13,13 @@
 	let fps = 60;
 	let c = 4;
 	let pedalSize =2;
+	let radiusSlider; 
+	let restartButton;
 	function init(){
 		ctx = canvas.getContext("2d");
+		radiusSlider = document.querySelector("#slider");
+		document.querySelector("#btn-restart").onclick = restart;
+		
 		canvas.width = canvasWidth;
 		canvas.height = canvasHeight;
 		ctx.fillRect(0,0,canvasWidth,canvasHeight);
@@ -39,11 +44,11 @@
 	//console.log(x,y);
 	//let color = `rgba(${(n * divergence) % 256}, 0, 0, 1)`;
 	let aDegrees = (n * divergence) % 361;
-	let color = `hsl(${aDegrees},100%,50%)`;
-	drawCircle(ctx, x, y, pedalSize, color);
+	let color = `rgba(${n}, ${divergence}, 0, 1)`;
+	drawCircle(ctx, x, y, (radiusSlider.value / 10), color);
 
 	n++;
-	divergence += 0.005;
+	divergence *= 1.005;
 }
 
 	// helpers
@@ -55,10 +60,16 @@
 		ctx.save();
 		ctx.fillStyle = color;
 		ctx.beginPath();
-		ctx.arc(x,y,radius,0,Math.PI * 2);
+		ctx.arc(x,y,radius, 0, Math.PI * 2);
 		ctx.closePath();
 		ctx.fill();
 		ctx.restore();
+	}
+
+	const restart = () =>{
+		divergence = 137.5;
+		n =0;
+		ctx.fillRect(0,0,canvasWidth,canvasHeight);
 	}
 
 	window.onload = init;
@@ -66,6 +77,25 @@
 </head>
 <body>
 <canvas id="canvas"></canvas>
+
+<div id="controls">
+	<button id="btn-restart">Restart App</button>
+	<div class="slidecontainer">
+		<label>Radius: </label>
+		<input type="range" min="1" max="100" value="50" class="slider" id="slider">
+	  </div>
+</div>
+<br>
+<h1>About:</h1>
+<ol>
+	<li>Slider will change radius of the circles being draw</li>
+	<li>Restart button will clear screen and reset n to 0 and divergence angle to 137.5</li>
+	<ol>Changes to starter code:
+		<li>divergence angle is multiplied by 1.005 every loop</li>
+		<li>increased fps to 60</li>
+		<li>red rgb value increases based on number of loops while green in rgb value increased based on divergence angle</li>
+	</ol>
+</ol>
 
 </body>
 </html>
