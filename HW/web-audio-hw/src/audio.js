@@ -47,7 +47,7 @@ the amplitude of that frequency.
 */ 
 
 // fft stands for Fast Fourier Transform
-Animation;yserMpde.fftSize = DEFAULTS.numSamples;
+analyserNode.fftSize = DEFAULTS.numSamples;
 
 // 7 - create a gain (volume) node
 gainNode = audioCtx.createGain();
@@ -59,19 +59,19 @@ analyserNode.connect(gainNode);
 gainNode.connect(audioCtx.destination);
 }
 
-function loadSoundFile(filePath){
+const loadSoundFile = (filePath) =>{
     element.src = filePath;
 }
 
-function playCurrentSound(){
+const playCurrentSound = () =>{
     element.play();
 }
 
-function pauseCurrentSound(){
+const pauseCurrentSound = () =>{
     element.pause();
 }
 
-function setVolume(value){
+const setVolume = (value) =>{
     value = Number(value);// make sure that it's a Number rather than a String
     gainNode.gain.value = value;
 }
