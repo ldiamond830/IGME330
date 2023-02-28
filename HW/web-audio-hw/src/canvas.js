@@ -12,7 +12,7 @@ import * as utils from './utils.js';
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 
 
-function setupCanvas(canvasElement,analyserNodeRef){
+const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	// create drawing context
 	ctx = canvasElement.getContext("2d");
 	canvasWidth = canvasElement.width;
@@ -25,10 +25,15 @@ function setupCanvas(canvasElement,analyserNodeRef){
 	audioData = new Uint8Array(analyserNode.fftSize/2);
 }
 
-function draw(params={}){
+const draw = (params={}, dataType) =>{
   // 1 - populate the audioData array with the frequency data from the analyserNode
 	// notice these arrays are passed "by reference" 
-	analyserNode.getByteFrequencyData(audioData);
+    if(dataType == "frequency"){
+         analyserNode.getByteFrequencyData(audioData);
+    }
+    else{ 
+        analyserNode.getByteTimeDomainData(audioData);
+    }
 	// OR
 	//analyserNode.getByteTimeDomainData(audioData); // waveform data
 	

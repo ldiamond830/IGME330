@@ -21,12 +21,14 @@ const drawParams = {
 
 }
 
+let visualizationType = "frequency"
+
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
 	sound1  :  "media/New Adventure Theme.mp3"
 });
 
-function init(){
+const init = () =>{
     audio.setupWebaudio(DEFAULTS.sound1);
 	console.log("init called");
 	console.log(`Testing utils.getRandomColor() import: ${utils.getRandomColor()}`);
@@ -36,10 +38,11 @@ function init(){
     loop();
 }
 
-function setupUI(canvasElement){
+const setupUI = (canvasElement) =>{
   // A - hookup fullscreen button
-  const fsButton = document.querySelector("#fsButton");
-	
+  const fsButton = document.querySelector("#fs-button");
+  const playButton = document.querySelector("#play-button");
+
   // add .onclick event to button
   fsButton.onclick = e => {
     console.log("init called");
@@ -67,8 +70,8 @@ function setupUI(canvasElement){
   }
 
   //hookup volume slider and label
-  let volumeSlider = document.querySelector("#volumeSlider");
-  let volumeLabel = document.querySelector("#volumeLabel");
+  let volumeSlider = document.querySelector("#volume-slider");
+  let volumeLabel = document.querySelector("#volume-label");
 
   //add oninput event
 	volumeSlider.oninput = e =>{
@@ -82,7 +85,7 @@ function setupUI(canvasElement){
     volumeSlider.dispatchEvent(new Event("input"));
 
     //hookup track selector
-    let trackSelect = document.querySelector("#trackSelect");
+    let trackSelect = document.querySelector("#track-select");
 
     trackSelect.onchange = e =>{
         audio.loadSoundFile(e.target.value);
@@ -92,7 +95,7 @@ function setupUI(canvasElement){
         }
     }
 
-    let gradientCheckBox = document.querySelector("#gradientCB");
+    let gradientCheckBox = document.querySelector("#gradient-check");
     gradientCheckBox.onclick = e =>{
         
         drawParams.showGradient = e.target.checked;
@@ -101,7 +104,7 @@ function setupUI(canvasElement){
     
     gradientCheckBox.dispatchEvent(new Event("click"));
    
-    let circleCheckBox = document.querySelector("#circlesCB");
+    let circleCheckBox = document.querySelector("#circles-check");
     circleCheckBox.onclick = e =>{
         
         drawParams.showCircles = e.target.checked;
@@ -110,7 +113,7 @@ function setupUI(canvasElement){
     
    circleCheckBox.dispatchEvent(new Event("click"));
 
-   let barsCheckBox = document.querySelector("#barsCB");
+   let barsCheckBox = document.querySelector("#bars-check");
     barsCheckBox.onclick = e =>{
         
         drawParams.showBars = e.target.checked;
@@ -121,7 +124,7 @@ function setupUI(canvasElement){
 
    
 
-    let noiseCheckBox = document.querySelector("#noiseCB");
+    let noiseCheckBox = document.querySelector("#noise-check");
     noiseCheckBox.onclick = e =>{
         console.log(e.target.checked)
         drawParams.showNoise = e.target.checked;
@@ -148,13 +151,26 @@ function setupUI(canvasElement){
     embossCheckBox.checked = false;
     embossCheckBox.dispatchEvent(new Event("click"));
 
+    let frequencySelector = document.querySelector("#frequency-select");
+    frequencySelector.checked = true;
+    let waveformSelector = document.querySelector("#waveform-select");
+    frequencySelector.onclick = () =>
+    {
+        visualizationType = "frequency";
+        waveformSelector.checked = false;
+    }
 
+    
+    waveformSelector.onclick = () =>{
+        visualizationType = "waveform"
+        frequencySelector.checked = false;
+    }
 } // end setupUI
 
-function loop(){
+const loop = () =>{
     /* NOTE: This is temporary testing code that we will delete in Part II */
         requestAnimationFrame(loop);
-        canvas.draw(drawParams);
+        canvas.draw(drawParams, visualizationType);
          /*
         // 1) create a byte array (values of 0-255) to hold the audio data
         // normally, we do this once when the program starts up, NOT every frame

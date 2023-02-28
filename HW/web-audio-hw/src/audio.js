@@ -3,7 +3,7 @@ let audioCtx;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
-let element, sourceNode, analyserNode, gainNode;
+let element, sourceNode, analyserNode, gainNode, bassNode, trebleNode;
 
 // 3 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
@@ -19,7 +19,7 @@ let audioData = new Uint8Array(DEFAULTS.numSamples/2);
 
 
 // **Next are "public" methods - we are going to export all of these at the bottom of this file**
-function setupWebaudio(filePath){
+const setupWebaudio = (filePath) =>{
 // 1 - The || is because WebAudio has not been standardized across browsers yet
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 audioCtx = new AudioContext();
