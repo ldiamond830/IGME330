@@ -21,6 +21,10 @@ const drawParams = {
 
 }
 
+
+  
+
+
 let visualizationType = "frequency"
 
 // 1 - here we are faking an enumeration

@@ -11,6 +11,31 @@ import * as utils from './utils.js';
 
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 
+class TriangleSprite{
+    static type = "triangle"; // demoing a static (class) variable here
+    constructor(x1,y1,x2,y2,x3,y3, color){
+     Object.assign(this, {x1, y1, x2, y2, x3, y3, color});
+    }
+    
+    update(bass, treble){
+      x1 -= bass;
+      x3 += bass;
+      y2 -= treble;
+    }
+    
+    draw(ctx){
+        ctx.save();
+        ctx.strokeStyle=color;
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.moveTo(x1,y1);
+        ctx.lineTo(x2,y2);
+        ctx.lineTo(x3,y3);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+    }
+  }
 
 const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	// create drawing context
