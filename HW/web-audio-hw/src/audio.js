@@ -53,10 +53,18 @@ analyserNode.fftSize = DEFAULTS.numSamples;
 gainNode = audioCtx.createGain();
 gainNode.gain.value = DEFAULTS.gain;
 
+bassNode = audioCtx.createBiquadFilter();
+bassNode.type = "lowshelf";
+
+trebleNode = audioCtx.createBiquadFilter();
+trebleNode.type = "highshelf";
+
 // 8 - connect the nodes - we now have an audio graph
 sourceNode.connect(analyserNode);
 analyserNode.connect(gainNode);
-gainNode.connect(audioCtx.destination);
+gainNode.connect(bassNode);
+bassNode.connect(trebleNode);
+trebleNode.connect(audioCtx.destination)
 }
 
 const loadSoundFile = (filePath) =>{
@@ -76,4 +84,4 @@ const setVolume = (value) =>{
     gainNode.gain.value = value;
 }
 
-export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode};
+export {audioCtx,setupWebaudio,playCurrentSound,pauseCurrentSound,loadSoundFile,setVolume,analyserNode,bassNode,trebleNode};

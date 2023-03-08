@@ -17,7 +17,8 @@ const drawParams = {
  showCircles : true,
  showNoise : true,
  showInvert : true,
- showEmboss : true
+ showEmboss : true,
+ playing : false
 
 }
 
@@ -59,17 +60,22 @@ const setupUI = (canvasElement) =>{
     //check if context is in suspended state
     if(audio.audioCtx.state == "suspended"){
         audio.audioCtx.resume();
+        drawParams.playing = true;
     }
     console.log(`audioCtx.state after = ${audio.audioCtx.state}`);
     //if track is currently paused play it
     if(e.target.dataset.playing == "no"){
         audio.playCurrentSound();
         e.target.dataset.playing = "yes";
+        drawParams.playing = true;
+       
     }
     //if track is currently playing pause it
     else{
         audio.pauseCurrentSound();
         e.target.dataset.playing = "no";
+        drawParams.playing = false;
+        
     }
   }
 
@@ -87,6 +93,36 @@ const setupUI = (canvasElement) =>{
     }
     //set value of label to match slider on set up
     volumeSlider.dispatchEvent(new Event("input"));
+
+    //hookup volume slider and label
+  let bassSlider = document.querySelector("#bass-slider");
+  let bassLabel = document.querySelector("#bass-label");
+
+  //add oninput event
+	bassSlider.oninput = e =>{
+        //set volume
+        audio.bassNode.gain.setValueAtTime(e.target.value/2 * 100, audio.audioCtx.currentTime);
+        //update value of the label to match volume
+        bassLabel.innerHTML = Math.round((e.target.value/2 * 400));
+
+    }
+    //set value of label to match slider on set up
+    bassSlider.dispatchEvent(new Event("input"));
+
+      //hookup volume slider and label
+  let trebleSlider = document.querySelector("#treble-slider");
+  let trebleLabel = document.querySelector("#treble-label");
+
+  //add oninput event
+  trebleSlider.oninput = e =>{
+        //set volume
+        audio.trebleNode.gain.setValueAtTime(e.target.value/2 * 100, audio.audioCtx.currentTime);
+        //update value of the label to match volume
+        trebleLabel.innerHTML = Math.round((e.target.value/2 * 400));
+
+    }
+    //set value of label to match slider on set up
+    trebleSlider.dispatchEvent(new Event("input"));
 
     //hookup track selector
     let trackSelect = document.querySelector("#track-select");

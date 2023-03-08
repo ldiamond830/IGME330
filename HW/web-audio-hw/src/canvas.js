@@ -9,17 +9,19 @@
 
 import * as utils from './utils.js';
 import { imageURL } from './loader.js';
+import { audioCtx } from './audio.js';
 
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 let sprites = [];
 let img;
 class TriangleSprite{
     static type = "triangle"; // demoing a static (class) variable here
-    constructor(x1,y1,x2,y2,x3,y3, color){
+    constructor(x1,y1,x2,y2,x3,y3){
     this.x1Origin = x1;
     this.y2Origin = y2;
     this.x3Origin = x3
-     Object.assign(this, {x1, y1, x2, y2, x3, y3, color});
+    this.counter = 0;
+     Object.assign(this, {x1, y1, x2, y2, x3, y3});
     }
     
     update(bass, treble){
@@ -28,21 +30,29 @@ class TriangleSprite{
       this.y2 = this.y2Origin + (treble / 6);
     }
     
-    draw(ctx){
-        ctx.save();
-        ctx.globalAlpha = 0.5;
-        ctx.strokeStyle= this.color;
-        ctx.fillStyle = this.color;
-        ctx.lineWidth=2;
-        ctx.beginPath();
-        ctx.moveTo(this.x1,this.y1);
-        ctx.lineTo(this.x2,this.y2);
-        ctx.lineTo(this.x3,this.y3);
-        ctx.fill();
-        ctx.closePath();
-        ctx.stroke();
+    draw(ctx, playing){
+        if(playing){
+            ctx.save();
+            this.counter += audioCtx.currentTime
+            let percent = this.counter/255;
+            
+            ctx.globalAlpha = 0.5;
+            ctx.strokeStyle= this.color;
         
-        ctx.restore();
+            ctx.fillStyle = `hsl(${percent}, 100%,50%)`;
+            
+            ctx.lineWidth=2;
+            ctx.beginPath();
+            ctx.moveTo(this.x1,this.y1);
+            ctx.lineTo(this.x2,this.y2);
+            ctx.lineTo(this.x3,this.y3);
+            ctx.fill();
+            ctx.closePath();
+            //ctx.stroke();
+            
+            ctx.restore();
+        }
+       
     }
   }
 
@@ -68,7 +78,7 @@ const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
 	audioData = new Uint8Array(analyserNode.fftSize/2);
-    sprites.push(new TriangleSprite(30,10,80,110,130,10, 'white'));
+    sprites.push(new TriangleSprite(30,10,80,110,130,10));
     preloadImage(imageURL);
 }
 
@@ -93,7 +103,7 @@ const draw = (params={}, dataType) =>{
 		
         for(let i = 0; i < audioData.length; i++){
             sprites[0].update(audioData[i], audioData[i]);
-            sprites[0].draw(ctx);
+            sprites[0].draw(ctx, params.playing);
 
             ctx.save()
             ctx.beginPath();
