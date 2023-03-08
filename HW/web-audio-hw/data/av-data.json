@@ -1,5 +1,14 @@
 {
     "title" : "diamond-l-hw-2",
-    "audioFiles" : ["media/New Adventure Theme.mp3", "media/Peanuts Theme.mp3", "media/The Picard Song.mp3"]
+    "audioFiles" : [{
+        "file": "media/New Adventure Theme.mp3",
+        "trackName" : "New Adventure Theme"}, 
+
+        {"file": "media/Peanuts Theme.mp3",
+        "trackName" : "Peanuts Theme"}, 
+
+        {"file" : "media/The Picard Song.mp3",
+        "trackName" : "The Picard Song"}],
     
+    "imageURL" : "media/background.png"
 }

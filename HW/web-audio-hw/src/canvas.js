@@ -8,33 +8,50 @@
 */
 
 import * as utils from './utils.js';
+import { imageURL } from './loader.js';
 
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
-
+let sprites = [];
+let img;
 class TriangleSprite{
     static type = "triangle"; // demoing a static (class) variable here
     constructor(x1,y1,x2,y2,x3,y3, color){
+    this.x1Origin = x1;
+    this.y2Origin = y2;
+    this.x3Origin = x3
      Object.assign(this, {x1, y1, x2, y2, x3, y3, color});
     }
     
     update(bass, treble){
-      x1 -= bass;
-      x3 += bass;
-      y2 -= treble;
+      this.x1 = this.x1Origin - (bass / 10);
+      this.x3 = this.x3Origin + (bass / 10);
+      this.y2 = this.y2Origin - (treble / 10);
     }
     
     draw(ctx){
         ctx.save();
-        ctx.strokeStyle=color;
+        ctx.globalAlpha = 0.5;
+        ctx.strokeStyle= this.color;
         ctx.lineWidth=2;
         ctx.beginPath();
-        ctx.moveTo(x1,y1);
-        ctx.lineTo(x2,y2);
-        ctx.lineTo(x3,y3);
+        ctx.moveTo(this.x1,this.y1);
+        ctx.lineTo(this.x2,this.y2);
+        ctx.lineTo(this.x3,this.y3);
         ctx.closePath();
         ctx.stroke();
         ctx.restore();
     }
+  }
+
+  const preloadImage = (url) =>{
+    img = new Image;
+    img.onerror = _=>{
+        console.log(`Image Error`);
+      };
+  
+      
+      img.src = url;
+
   }
 
 const setupCanvas = (canvasElement,analyserNodeRef) =>{
@@ -48,6 +65,8 @@ const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
 	audioData = new Uint8Array(analyserNode.fftSize/2);
+    sprites.push(new TriangleSprite(30,10,80,110,130,10, 'white'));
+    preloadImage(imageURL);
 }
 
 const draw = (params={}, dataType) =>{
@@ -62,13 +81,19 @@ const draw = (params={}, dataType) =>{
 	// OR
 	//analyserNode.getByteTimeDomainData(audioData); // waveform data
 	
+
+
 	// 2 - draw background
 	ctx.save();
-    ctx.fillStyle = "black";
-    ctx.globalAlpha =0.1;
-    ctx.fillRect(0,0,canvasWidth,canvasHeight);
+    ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
     ctx.restore()
 		
+        for(let i = 0; i < audioData.length; i++){
+            sprites[0].update(audioData[i], audioData[i]);
+            sprites[0].draw(ctx);
+        }
+       
+      
 	// 3 - draw gradient
     if(params.showGradient){
         ctx.save()
@@ -84,7 +109,7 @@ const draw = (params={}, dataType) =>{
         let margin = 5;
         let screenWidthForBars = canvasWidth - (audioData.length * barSpacing) - margin * 2;
         let barWidth = screenWidthForBars / audioData.length;
-        let barHeight = 200;
+        let maxBarHeight = 10;
         let topSpacing = 100;
         
         ctx.save();
@@ -92,8 +117,9 @@ const draw = (params={}, dataType) =>{
         ctx.strokeStyle = `rgba(0,0,0,0.5)`;
         //loop through data and draw
         for(let i = 0; i < audioData.length; i++){
-            ctx.fillRect(margin + i * (barWidth * barSpacing), topSpacing + 256 - audioData[i], barWidth, barHeight);
-            ctx.strokeRect(margin + i * (barWidth * barSpacing), topSpacing + 256 - audioData[i], barWidth, barHeight);
+            let temp =  -1 * (i - (audioData.length/2)) * (i - (audioData.length/2));
+            ctx.fillRect(margin + i * (barWidth * barSpacing), canvasHeight, barWidth, -1 * (maxBarHeight - temp / 50 + audioData[i]/ 5) - i);
+            //ctx.strokeRect(margin + i * (barWidth * barSpacing), canvasHeight, barWidth, (i - (audioData.length/2))^2 + audioData[i]);
         }
         ctx.restore();
     }

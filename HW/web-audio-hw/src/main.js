@@ -173,7 +173,7 @@ const setupUI = (canvasElement) =>{
 
 const loop = () =>{
     /* NOTE: This is temporary testing code that we will delete in Part II */
-        requestAnimationFrame(loop);
+        setTimeout(loop, 1/60);
         canvas.draw(drawParams, visualizationType);
          /*
         // 1) create a byte array (values of 0-255) to hold the audio data
