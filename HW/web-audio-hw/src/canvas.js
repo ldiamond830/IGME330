@@ -23,22 +23,25 @@ class TriangleSprite{
     }
     
     update(bass, treble){
-      this.x1 = this.x1Origin - (bass / 10);
-      this.x3 = this.x3Origin + (bass / 10);
-      this.y2 = this.y2Origin - (treble / 10);
+      this.x1 = this.x1Origin - (bass / 6);
+      this.x3 = this.x3Origin + (bass / 6);
+      this.y2 = this.y2Origin + (treble / 6);
     }
     
     draw(ctx){
         ctx.save();
         ctx.globalAlpha = 0.5;
         ctx.strokeStyle= this.color;
+        ctx.fillStyle = this.color;
         ctx.lineWidth=2;
         ctx.beginPath();
         ctx.moveTo(this.x1,this.y1);
         ctx.lineTo(this.x2,this.y2);
         ctx.lineTo(this.x3,this.y3);
+        ctx.fill();
         ctx.closePath();
         ctx.stroke();
+        
         ctx.restore();
     }
   }
@@ -91,7 +94,33 @@ const draw = (params={}, dataType) =>{
         for(let i = 0; i < audioData.length; i++){
             sprites[0].update(audioData[i], audioData[i]);
             sprites[0].draw(ctx);
+
+            ctx.save()
+            ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.moveTo(300, 230);
+        ctx.lineTo(325, 190);
+        ctx.lineTo(300, 120);
+        ctx.lineTo(315 - audioData[i] / 2, 190 - audioData[i] / 2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(500, 230);
+        ctx.lineTo(475, 190);
+        ctx.lineTo(500, 120);
+        ctx.lineTo(485 + audioData[i] / 2, 190 - audioData[i] / 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore()
         }
+       
+
+
+
+        
+      
+        
        
       
 	// 3 - draw gradient
@@ -119,7 +148,7 @@ const draw = (params={}, dataType) =>{
         for(let i = 0; i < audioData.length; i++){
             let temp =  -1 * (i - (audioData.length/2)) * (i - (audioData.length/2));
             ctx.fillRect(margin + i * (barWidth * barSpacing), canvasHeight, barWidth, -1 * (maxBarHeight - temp / 50 + audioData[i]/ 5) - i);
-            //ctx.strokeRect(margin + i * (barWidth * barSpacing), canvasHeight, barWidth, (i - (audioData.length/2))^2 + audioData[i]);
+            ctx.strokeRect(margin + i * (barWidth * barSpacing), canvasHeight, barWidth, -1 * (maxBarHeight - temp / 50 + audioData[i]/ 5) - i);
         }
         ctx.restore();
     }
