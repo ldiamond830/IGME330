@@ -137,9 +137,20 @@ const draw = (params={}, dataType) =>{
         ctx.globalCompositeOperation = "source-atop"; 
         ctx.fillStyle = "green"
         ctx.beginPath();
-        ctx.moveTo(250, 200);             	// P0
-        ctx.arcTo(300, 200 - audioData[i] / 10, 350, 200, 120); 	// P1, P2 and the radius
-        ctx.lineTo(350, 200);               // top line: line segment between P0 & P2     
+        ctx.moveTo(250, 175);             	// P0
+        ctx.arcTo(300, 175 - audioData[i] / 10, 350, 175, 120); 	// P1, P2 and the radius
+        ctx.lineTo(350, 175);               // top line: line segment between P0 & P2     
+        ctx.closePath();          
+        ctx.fill(); 
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalCompositeOperation = "source-atop"; 
+        ctx.fillStyle = "green"
+        ctx.beginPath();
+        ctx.moveTo(450, 175);             	// P0
+        ctx.arcTo(500, 175 - audioData[i] / 10, 550, 175, 120); 	// P1, P2 and the radius
+        ctx.lineTo(550, 175);               // top line: line segment between P0 & P2     
         ctx.closePath();          
         ctx.fill(); 
         ctx.restore();
