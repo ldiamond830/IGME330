@@ -24,15 +24,16 @@ class TriangleSprite{
      Object.assign(this, {x1, y1, x2, y2, x3, y3});
     }
     
-    update(bass, treble){
-      this.x1 = this.x1Origin - (bass / 6);
-      this.x3 = this.x3Origin + (bass / 6);
-      this.y2 = this.y2Origin + (treble / 6);
+    update(audioData){
+      this.x1 = this.x1Origin - (audioData / 6);
+      this.x3 = this.x3Origin + (audioData / 6);
+      //this.y2 = this.y2Origin - (audioData / 6);
     }
     
     draw(ctx, playing){
         if(playing){
             ctx.save();
+            ctx.rotate(-Math.PI/8);
             this.counter += audioCtx.currentTime
             let percent = this.counter/255;
             
@@ -47,8 +48,6 @@ class TriangleSprite{
             ctx.lineTo(this.x2,this.y2);
             ctx.lineTo(this.x3,this.y3);
             ctx.fill();
-            ctx.closePath();
-            //ctx.stroke();
             
             ctx.restore();
         }
@@ -78,7 +77,8 @@ const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
 	audioData = new Uint8Array(analyserNode.fftSize/2);
-    sprites.push(new TriangleSprite(30,10,80,110,130,10));
+    sprites.push(new TriangleSprite(30, 110, 80, 40, 130,110));
+    sprites.push(new TriangleSprite(400, 110, 450, 40, 500, 110));
     preloadImage(imageURL);
 }
 
@@ -101,28 +101,48 @@ const draw = (params={}, dataType) =>{
     ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
     ctx.restore()
 		
+   
+
         for(let i = 0; i < audioData.length; i++){
+
+          
+
             sprites[0].update(audioData[i], audioData[i]);
             sprites[0].draw(ctx, params.playing);
+            sprites[1].update(audioData[i], audioData[i]);
+            sprites[1].draw(ctx, params.playing);
+            
 
             ctx.save()
             ctx.beginPath();
-        ctx.fillStyle = 'red';
-        ctx.moveTo(300, 230);
-        ctx.lineTo(325, 190);
-        ctx.lineTo(300, 120);
-        ctx.lineTo(315 - audioData[i] / 2, 190 - audioData[i] / 2);
-        ctx.closePath();
-        ctx.fill();
+            ctx.fillStyle = 'red';
+            ctx.moveTo(300, 230);
+            ctx.lineTo(325, 190);
+            ctx.lineTo(300, 120);
+            ctx.lineTo(315 - audioData[i] / 2, 190 - audioData[i] / 2);
+            ctx.closePath();
+            ctx.fill();
 
+            ctx.beginPath();
+            ctx.moveTo(500, 230);
+            ctx.lineTo(475, 190);
+            ctx.lineTo(500, 120);
+            ctx.lineTo(485 + audioData[i] / 2, 190 - audioData[i] / 2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore()
+
+
+        ctx.save();
+        ctx.globalCompositeOperation = "source-atop"; 
+        ctx.fillStyle = "green"
         ctx.beginPath();
-        ctx.moveTo(500, 230);
-        ctx.lineTo(475, 190);
-        ctx.lineTo(500, 120);
-        ctx.lineTo(485 + audioData[i] / 2, 190 - audioData[i] / 2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore()
+        ctx.moveTo(250, 200);             	// P0
+        ctx.arcTo(300, 200 - audioData[i] / 10, 350, 200, 120); 	// P1, P2 and the radius
+        ctx.lineTo(350, 200);               // top line: line segment between P0 & P2     
+        ctx.closePath();          
+        ctx.fill(); 
+        ctx.restore();
         }
        
 
