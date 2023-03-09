@@ -16,12 +16,12 @@ let sprites = [];
 let img;
 class TriangleSprite{
     static type = "triangle"; // demoing a static (class) variable here
-    constructor(x1,y1,x2,y2,x3,y3){
+    constructor(x1,y1,x2,y2,x3,y3, direction, translateX, translateY){
     this.x1Origin = x1;
     this.y2Origin = y2;
     this.x3Origin = x3
     this.counter = 0;
-     Object.assign(this, {x1, y1, x2, y2, x3, y3});
+     Object.assign(this, {x1, y1, x2, y2, x3, y3, direction, translateX, translateY});
     }
     
     update(audioData){
@@ -33,20 +33,37 @@ class TriangleSprite{
     draw(ctx, playing){
         if(playing){
             ctx.save();
-            ctx.rotate(-Math.PI/8);
+           
+            
             this.counter += audioCtx.currentTime
             let percent = this.counter/255;
+            ctx.translate(this.translateX, this.translateY);
+            
+            if(this.direction == "right"){
+                ctx.rotate(-Math.PI/8);
+            }
+            else if(this.direction == "left"){
+                ctx.rotate(Math.PI/8);
+            }
             
             ctx.globalAlpha = 0.5;
-            ctx.strokeStyle= this.color;
+            //ctx.strokeStyle= this.color;
         
             ctx.fillStyle = `hsl(${percent}, 100%,50%)`;
             
-            ctx.lineWidth=2;
+            //ctx.lineWidth=2;
             ctx.beginPath();
+            /*
             ctx.moveTo(this.x1,this.y1);
             ctx.lineTo(this.x2,this.y2);
             ctx.lineTo(this.x3,this.y3);
+            */
+            ctx.moveTo(30,110);
+            ctx.lineTo(80,40);
+            ctx.lineTo(130,110);
+            
+            ctx.closePath();
+            
             ctx.fill();
             
             ctx.restore();
@@ -77,8 +94,9 @@ const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
 	audioData = new Uint8Array(analyserNode.fftSize/2);
-    sprites.push(new TriangleSprite(30, 110, 80, 40, 130,110));
-    sprites.push(new TriangleSprite(400, 110, 450, 40, 500, 110));
+    sprites.push(new TriangleSprite(30, 110, 80, 40, 130,110, "right", 0, 10));
+    //sprites.push(new TriangleSprite(400, 110, 450, 40, 500, 110));
+    sprites.push(new TriangleSprite(680, 110, 730, 40, 780,110, "left", 650, -55));
     preloadImage(imageURL);
 }
 
@@ -132,17 +150,19 @@ const draw = (params={}, dataType) =>{
             ctx.fill();
             ctx.restore()
 
-
+/*
         ctx.save();
-        ctx.globalCompositeOperation = "source-atop"; 
+        //ctx.globalCompositeOperation = "source-atop"; 
         ctx.fillStyle = "green"
         ctx.beginPath();
         ctx.moveTo(250, 200);             	// P0
-        ctx.arcTo(300, 200 - audioData[i] / 10, 350, 200, 120); 	// P1, P2 and the radius
+        //ctx.arc(300, 200 - audioData[i] / 10, 350, 200, 120);
+        //ctx.arc(300, 500, 350, 200, 120);  	// P1, P2 and the radius
         ctx.lineTo(350, 200);               // top line: line segment between P0 & P2     
         ctx.closePath();          
         ctx.fill(); 
         ctx.restore();
+        */
         }
        
 
