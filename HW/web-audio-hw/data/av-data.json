@@ -8,7 +8,12 @@
         "trackName": "No Thanks"},
         
         {"file": "media/Teenage Dirtbag -Wheatus.mp3",
-        "trackName": "Teenage Dirtbag"}
+        "trackName": "Teenage Dirtbag"},
+
+        {"file" : "media/New Adventure Theme.mp3",
+        "trackName": "New Adventure Theme"}
+
+
     ],
 
     

@@ -25,7 +25,7 @@ const loadFromJSON = () =>{
 
 		document.querySelector("title").innerHTML = json.title;
 
-
+		
 		const trackSelect = document.querySelector("#track-select");
 		let innerHTML;
 		for(let i = 0; i < json.audioFiles.length; i++){
@@ -37,7 +37,7 @@ const loadFromJSON = () =>{
 		imageURL = json.imageURL
 
 		//once data has been loaded calls init
-		main.init();
+		main.init(json.audioFiles);
 	};
 	xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);
 	xhr.open("GET", url);
