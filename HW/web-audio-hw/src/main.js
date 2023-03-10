@@ -23,7 +23,15 @@ const drawParams = {
 
 }
 
+const controllerObject = {
 
+
+play(){
+   playAudio()
+}
+
+
+}
   
 
 
@@ -45,6 +53,13 @@ const init = () =>{
 }
 
 const setupUI = (canvasElement) =>{
+
+    const gui = new dat.GUI({ width: 400 });
+	gui.close();
+
+    gui.add(controllerObject, 'play').name("play")
+
+
   // A - hookup fullscreen button
   const fsButton = document.querySelector("#fs-button");
   const playButton = document.querySelector("#play-button");
@@ -223,3 +238,20 @@ const loop = () =>{
     }
 
 export {init};
+
+const playAudio = () =>{
+    //if track is currently paused play it
+    if(drawParams.playing == false){
+        audio.playCurrentSound();
+        //e.target.dataset.playing = "yes";
+        drawParams.playing = true;
+       
+    }
+     //check if context is in suspended state
+     if(audio.audioCtx.state == "suspended"){
+        audio.audioCtx.resume();
+        drawParams.playing = true;
+    }
+    console.log(`audioCtx.state after = ${audio.audioCtx.state}`);
+    
+}

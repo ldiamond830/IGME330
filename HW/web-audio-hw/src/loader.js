@@ -6,6 +6,7 @@ window.onload = ()=>{
 	console.log("window.onload called");
 	// 1 - do preload here - load fonts, images, additional sounds, etc...
 	loadFromJSON();
+
 	
 	
 }
@@ -35,10 +36,11 @@ const loadFromJSON = () =>{
 		
 		imageURL = json.imageURL
 
-		//start up app when app is finished loading and updating values
+		//once data has been loaded calls init
 		main.init();
 	};
 	xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);
 	xhr.open("GET", url);
 	xhr.send();
 }
+
