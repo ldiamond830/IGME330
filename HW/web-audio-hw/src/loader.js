@@ -10,7 +10,7 @@ window.onload = ()=>{
 	
 }
 
-
+//pulls in data from json file, parses it, and outputs it to the DOM
 const loadFromJSON = () =>{
 	const url = "data/av-data.json";
 	const xhr = new XMLHttpRequest();
@@ -29,14 +29,13 @@ const loadFromJSON = () =>{
 		let innerHTML;
 		for(let i = 0; i < json.audioFiles.length; i++){
 			innerHTML += `<option value="${json.audioFiles[i].file}">${json.audioFiles[i].trackName}</option>`
-			//innerHTML += `<option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>`
 		}
 
 		trackSelect.innerHTML = innerHTML;
 		
 		imageURL = json.imageURL
 
-		//start up app when app is finished loading
+		//start up app when app is finished loading and updating values
 		main.init();
 	};
 	xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);

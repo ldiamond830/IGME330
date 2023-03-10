@@ -12,9 +12,10 @@ import * as audio from './audio.js';
 import * as canvas from './canvas.js';
 
 const drawParams = {
- showGradient : true,
+    horns: true,
+ backEyes : true,
  showBars : true,
- showCircles : true,
+ frontEyes : true,
  showNoise : true,
  showInvert : true,
  showEmboss : true,
@@ -30,7 +31,7 @@ let visualizationType = "frequency"
 
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
-	sound1  :  "media/New Adventure Theme.mp3"
+	sound1  :  "media/Judgement - Kensuke Ushio.mp3"
 });
 
 const init = () =>{
@@ -138,7 +139,7 @@ const setupUI = (canvasElement) =>{
     let gradientCheckBox = document.querySelector("#gradient-check");
     gradientCheckBox.onclick = e =>{
         
-        drawParams.showGradient = e.target.checked;
+        drawParams.backEyes = e.target.checked;
        
     }
     
@@ -147,11 +148,18 @@ const setupUI = (canvasElement) =>{
     let circleCheckBox = document.querySelector("#circles-check");
     circleCheckBox.onclick = e =>{
         
-        drawParams.showCircles = e.target.checked;
-       console.log(drawParams.showCircles);
+        drawParams.frontEyes = e.target.checked;
+       console.log(drawParams.frontEyes);
+    }
+
+    let hornsCheckBox = document.querySelector("#horns-check");
+    hornsCheckBox.onclick = e =>{
+        
+        drawParams.horns = e.target.checked;
+       console.log(drawParams.horns);
     }
     
-   circleCheckBox.dispatchEvent(new Event("click"));
+   hornsCheckBox.dispatchEvent(new Event("click"));
 
    let barsCheckBox = document.querySelector("#bars-check");
     barsCheckBox.onclick = e =>{
@@ -208,36 +216,10 @@ const setupUI = (canvasElement) =>{
 } // end setupUI
 
 const loop = () =>{
-    /* NOTE: This is temporary testing code that we will delete in Part II */
+    //called 60 times per second draws visualizer based on params
         setTimeout(loop, 1/60);
         canvas.draw(drawParams, visualizationType);
-         /*
-        // 1) create a byte array (values of 0-255) to hold the audio data
-        // normally, we do this once when the program starts up, NOT every frame
-        let audioData = new Uint8Array(audio.analyserNode.fftSize/2);
         
-        // 2) populate the array of audio data *by reference* (i.e. by its address)
-        audio.analyserNode.getByteFrequencyData(audioData);
-        
-        // 3) log out the array and the average loudness (amplitude) of all of the frequency bins
-       
-            console.log(audioData);
-            
-            console.log("-----Audio Stats-----");
-            let totalLoudness =  audioData.reduce((total,num) => total + num);
-            let averageLoudness =  totalLoudness/(audio.analyserNode.fftSize/2);
-            let minLoudness =  Math.min(...audioData); // ooh - the ES6 spread operator is handy!
-            let maxLoudness =  Math.max(...audioData); // ditto!
-            // Now look at loudness in a specific bin
-            // 22050 kHz divided by 128 bins = 172.23 kHz per bin
-            // the 12th element in array represents loudness at 2.067 kHz
-            let loudnessAt2K = audioData[11]; 
-            console.log(`averageLoudness = ${averageLoudness}`);
-            console.log(`minLoudness = ${minLoudness}`);
-            console.log(`maxLoudness = ${maxLoudness}`);
-            console.log(`loudnessAt2K = ${loudnessAt2K}`);
-            console.log("---------------------");
-            */
     }
 
 export {init};

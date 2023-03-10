@@ -14,31 +14,45 @@ import { audioCtx } from './audio.js';
 let ctx,canvasWidth,canvasHeight,gradient,analyserNode,audioData;
 let sprites = [];
 let img;
-class TriangleSprite{
+class hornSprite{
     static type = "triangle"; // demoing a static (class) variable here
-    constructor(x1,y1,x2,y2,x3,y3, direction, translateX, translateY){
-    this.x1Origin = x1;
-    this.y2Origin = y2;
-    this.x3Origin = x3
+    constructor(direction, translateX, translateY){
+    
     this.counter = 0;
-     Object.assign(this, {x1, y1, x2, y2, x3, y3, direction, translateX, translateY});
+    this.hue = 0
+    this.color = `hsl(${this.hue}, 100%, 10%)`
+     Object.assign(this, {direction, translateX, translateY});
     }
     
     update(audioData){
-      this.x1 = this.x1Origin - (audioData / 6);
-      this.x3 = this.x3Origin + (audioData / 6);
-      //this.y2 = this.y2Origin - (audioData / 6);
+        //color changes over time as the song continues
+        this.hue += audioCtx.currentTime/255;
+        //resets color
+        if(this.hue >= 255)
+        {
+            this.hue = 0;
+        }
+        //saturation is controled by audio data
+        let saturation = 40 + (audioData * 2);
+        //caps saturation
+        if(saturation > 100){
+            saturation = 100;
+        }
+
+        this.color = `hsl(${this.hue}, ${saturation}%, 50%)`
     }
     
     draw(ctx, playing){
+        //stops color change when not playing
         if(playing){
             ctx.save();
            
             
-            this.counter += audioCtx.currentTime
-            let percent = this.counter/255;
+            //this.counter += audioCtx.currentTime
+            //let percent = this.counter/255;
+            //goes to new origin
             ctx.translate(this.translateX, this.translateY);
-            
+            //angles horns
             if(this.direction == "right"){
                 ctx.rotate(-Math.PI/8);
             }
@@ -46,18 +60,13 @@ class TriangleSprite{
                 ctx.rotate(Math.PI/8);
             }
             
+            //draws the horn
             ctx.globalAlpha = 0.5;
-            //ctx.strokeStyle= this.color;
-        
-            ctx.fillStyle = `hsl(${percent}, 100%,50%)`;
+            ctx.fillStyle = this.color;
             
             //ctx.lineWidth=2;
             ctx.beginPath();
-            /*
-            ctx.moveTo(this.x1,this.y1);
-            ctx.lineTo(this.x2,this.y2);
-            ctx.lineTo(this.x3,this.y3);
-            */
+
             ctx.moveTo(30,110);
             ctx.lineTo(80,40);
             ctx.lineTo(130,110);
@@ -72,7 +81,8 @@ class TriangleSprite{
     }
   }
 
-  const preloadImage = (url) =>{
+  //loads in the image to be drawn to the screen
+  const loadImage = (url) =>{
     img = new Image;
     img.onerror = _=>{
         console.log(`Image Error`);
@@ -94,23 +104,21 @@ const setupCanvas = (canvasElement,analyserNodeRef) =>{
 	analyserNode = analyserNodeRef;
 	// this is the array where the analyser data will be stored
 	audioData = new Uint8Array(analyserNode.fftSize/2);
-    sprites.push(new TriangleSprite(30, 110, 80, 40, 130,110, "right", 0, 10));
+    sprites.push(new hornSprite("right", 0, 10));
     //sprites.push(new TriangleSprite(400, 110, 450, 40, 500, 110));
-    sprites.push(new TriangleSprite(680, 110, 730, 40, 780,110, "left", 650, -55));
-    preloadImage(imageURL);
+    sprites.push(new hornSprite("left", 650, -55));
+    loadImage(imageURL);
 }
 
 const draw = (params={}, dataType) =>{
-  // 1 - populate the audioData array with the frequency data from the analyserNode
-	// notice these arrays are passed "by reference" 
+  //gets the audio data based on whether the user has selected frequency or waveform
     if(dataType == "frequency"){
          analyserNode.getByteFrequencyData(audioData);
     }
     else{ 
         analyserNode.getByteTimeDomainData(audioData);
     }
-	// OR
-	//analyserNode.getByteTimeDomainData(audioData); // waveform data
+	
 	
 
 
@@ -120,20 +128,25 @@ const draw = (params={}, dataType) =>{
     ctx.restore()
 		
    
-
-        for(let i = 0; i < audioData.length; i++){
-
-          
-
-            sprites[0].update(audioData[i], audioData[i]);
-            sprites[0].draw(ctx, params.playing);
-            sprites[1].update(audioData[i], audioData[i]);
-            sprites[1].draw(ctx, params.playing);
+        //sprite update
+        if(params.horns){
+            for(let i = 0; i < audioData.length; i++){
+                sprites[0].update(audioData[i], audioData[i]);
+                sprites[0].draw(ctx, params.playing);
+                sprites[1].update(audioData[i], audioData[i]);
+                sprites[1].draw(ctx, params.playing);
             
-
+            
+            }
+        }
+        
+       
+        //eye background that grows and shrinks based on audio data
+        if(params.backEyes){
+            for(let i = 0; i < audioData.length; i++){
             ctx.save()
             ctx.beginPath();
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = 'white';
             ctx.moveTo(300, 230);
             ctx.lineTo(325, 190);
             ctx.lineTo(300, 120);
@@ -149,50 +162,35 @@ const draw = (params={}, dataType) =>{
             ctx.closePath();
             ctx.fill();
             ctx.restore()
-
-/*
-        ctx.save();
-        //ctx.globalCompositeOperation = "source-atop"; 
-        ctx.fillStyle = "green"
-        ctx.beginPath();
-        ctx.moveTo(250, 175);             	// P0
-        ctx.arcTo(300, 175 - audioData[i] / 10, 350, 175, 120); 	// P1, P2 and the radius
-        ctx.lineTo(350, 175);               // top line: line segment between P0 & P2     
-        ctx.closePath();          
-        ctx.fill(); 
-        ctx.restore();
-
-        ctx.save();
-        ctx.globalCompositeOperation = "source-atop"; 
-        ctx.fillStyle = "green"
-        ctx.beginPath();
-        ctx.moveTo(450, 175);             	// P0
-        ctx.arcTo(500, 175 - audioData[i] / 10, 550, 175, 120); 	// P1, P2 and the radius
-        ctx.lineTo(550, 175);               // top line: line segment between P0 & P2     
-        ctx.closePath();          
-        ctx.fill(); 
-        ctx.restore();
-        */
+            }
         }
-       
 
-
-
+        //arc that varies based on audio data to look like eyes opening
+        if(params.frontEyes){
+            for(let i = 0; i < audioData.length; i++){
+                ctx.save();
+                    ctx.fillStyle = `red`
+                    ctx.beginPath();
+                    ctx.moveTo(225, 150);             	// P0
+                    ctx.arcTo(275, 150 - audioData[i] / 8, 326, 150, 120); 	// P1, P2 and the radius
+                    ctx.lineTo(325, 150);               // top line: line segment between P0 & P2     
+                    ctx.closePath();          
+                    ctx.fill(); 
+                    
+                   
+                    ctx.beginPath();
+                    ctx.moveTo(475, 150);             	// P0
+                    ctx.arcTo(525, 150 - audioData[i] / 8, 575, 150, 120); 	// P1, P2 and the radius
+                    ctx.lineTo(575, 150);               // top line: line segment between P0 & P2     
+                    ctx.closePath();          
+                    ctx.fill(); 
+                    ctx.restore();
+              
+                }
+        }
         
-      
-        
        
-      
-	// 3 - draw gradient
-    if(params.showGradient){
-        ctx.save()
-        ctx.fillStyle = gradient;
-        ctx.globalAlpha = 0.3;
-        ctx.fillRect(0,0,canvasWidth,canvasHeight);
-        ctx.restore();
-    }
-	
-	// 4 - draw bars
+      // changed bars from the start code to follow a more parabolic shape to look like many teeth moving up and down
 	if(params.showBars){
         let barSpacing = 4;
         let margin = 5;
@@ -212,6 +210,17 @@ const draw = (params={}, dataType) =>{
         }
         ctx.restore();
     }
+        /* unused code from starter
+	// 3 - draw gradient
+    if(params.showGradient){
+        ctx.save()
+        ctx.fillStyle = gradient;
+        ctx.globalAlpha = 0.3;
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+        ctx.restore();
+    }
+	
+	
 	// 5 - draw circles
     if(params.showCircles){
         let maxRadius = canvasHeight / 4;
@@ -250,7 +259,7 @@ const draw = (params={}, dataType) =>{
 
         ctx.restore()
     }
-
+*/
     
     
     // 6 - bitmap manipulation

@@ -1,14 +1,16 @@
 {
     "title" : "diamond-l-hw-2",
-    "audioFiles" : [{
-        "file": "media/New Adventure Theme.mp3",
-        "trackName" : "New Adventure Theme"}, 
+    "audioFiles" : [
+        {"file": "media/Judgement - Kensuke Ushio.mp3",
+        "trackName": "Judgement"},
 
-        {"file": "media/Peanuts Theme.mp3",
-        "trackName" : "Peanuts Theme"}, 
+        {"file": "media/No Thanks - Knocked Loose.mp3",
+        "trackName": "No Thanks"},
+        
+        {"file": "media/Teenage Dirtbag -Wheatus.mp3",
+        "trackName": "Teenage Dirtbag"}
+    ],
 
-        {"file" : "media/The Picard Song.mp3",
-        "trackName" : "The Picard Song"}],
     
     "imageURL" : "media/background.png"
 }

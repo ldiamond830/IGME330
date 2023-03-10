@@ -53,6 +53,7 @@ analyserNode.fftSize = DEFAULTS.numSamples;
 gainNode = audioCtx.createGain();
 gainNode.gain.value = DEFAULTS.gain;
 
+//creating effect nodes
 bassNode = audioCtx.createBiquadFilter();
 bassNode.type = "lowshelf";
 
