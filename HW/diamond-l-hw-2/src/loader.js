@@ -25,7 +25,7 @@ const loadFromJSON = () =>{
 
 		document.querySelector("title").innerHTML = json.title;
 
-		
+		//fills the DOM track select
 		const trackSelect = document.querySelector("#track-select");
 		let innerHTML;
 		for(let i = 0; i < json.audioFiles.length; i++){
@@ -34,9 +34,10 @@ const loadFromJSON = () =>{
 
 		trackSelect.innerHTML = innerHTML;
 		
+		//stores image URL to be exported
 		imageURL = json.imageURL
 
-		//once data has been loaded calls init
+		//once data has been loaded calls init and sends the audio files array for use in datGUI set up
 		main.init(json.audioFiles);
 	};
 	xhr.onerror = e => console.log(`In onerror - HTTP status code = ${e.target.status}`);

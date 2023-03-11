@@ -31,6 +31,7 @@ let volumeLabel;
 let bassSlider;
 let bassLabel;
 
+//object holding data and methods for datGUI
 const controllerObject = {
 
 _track : "media/Judgement - Kensuke Ushio.mp3",
@@ -207,9 +208,11 @@ const init = (audioFiles) =>{
 
 const setupUI = (canvasElement, audioFiles) =>{
 
+    //initializing dat GUI
     const gui = new dat.GUI({ width: 400 });
 	gui.close();
 
+    //buttons
     gui.add(controllerObject, 'play').name("Play");
     gui.add(controllerObject, 'pause').name("Pause");
     gui.add(controllerObject, 'fullscreen').name("Fullscreen");
@@ -223,13 +226,16 @@ const setupUI = (canvasElement, audioFiles) =>{
         trackList[newTrack] = track.file
     }
 
+    //drop down menus
     gui.add(controllerObject, 'track', trackList ).name('Track');
     gui.add(controllerObject, 'visualizationType', { Frequency: "frequency", WaveLength: "waveLength"} ).name('Visualization Type');
 
+    //sliders
     gui.add(controllerObject, 'volume').min(0).max(2).step(0.1).name('Volume');
     gui.add(controllerObject, 'lowPass').min(0).max(1).step("0.01").name('Low Pass Filter');
     gui.add(controllerObject, 'highPass').min(0).max(1).step("0.01").name('High Pass Filter');
 
+    //check boxes
     gui.add(controllerObject, 'showBackEyes').name("Show Back Eyes");
     gui.add(controllerObject, 'showFrontEyes').name("Show Front Eyes");
     gui.add(controllerObject, 'showMouth').name("Show Mouth");
@@ -241,6 +247,7 @@ const setupUI = (canvasElement, audioFiles) =>{
 
 
 
+//initializing DOM controls
   // A - hookup fullscreen button
   const fsButton = document.querySelector("#fs-button");
   const playButton = document.querySelector("#play-button");
@@ -417,6 +424,7 @@ const loop = () =>{
 
 export {init};
 
+//helper methods for play and pause buttons
 const playAudio = () =>{
     //if track is currently paused play it
     if(drawParams.playing == false){

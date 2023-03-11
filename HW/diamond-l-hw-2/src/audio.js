@@ -68,18 +68,21 @@ bassNode.connect(trebleNode);
 trebleNode.connect(audioCtx.destination)
 }
 
+//helper method for loading new sound file
 const loadSoundFile = (filePath) =>{
     element.src = filePath;
 }
 
+//helper method for play button
 const playCurrentSound = () =>{
     element.play();
 }
-
+//helper method for pause button
 const pauseCurrentSound = () =>{
     element.pause();
 }
 
+//helper method for volume slider
 const setVolume = (value) =>{
     value = Number(value);// make sure that it's a Number rather than a String
     gainNode.gain.value = value;
