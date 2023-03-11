@@ -26,6 +26,11 @@ const drawParams = {
 let visualizationType = "frequency"
 
 
+let volumeSlider;
+let volumeLabel;
+let bassSlider;
+let bassLabel;
+
 const controllerObject = {
 
 _track : "media/Judgement - Kensuke Ushio.mp3",
@@ -67,6 +72,7 @@ get showMouth(){
 
 set showMouth(value){
     this._showMouth = value;
+    
     drawParams.showBars = this._showMouth
 },
 
@@ -94,6 +100,7 @@ get showInvert(){
 
 set showInvert(value){
     this._showInvert = value;
+    //invertCheckBox.checked = value;
     drawParams.showInvert = this._showInvert;
 },
 
@@ -123,6 +130,8 @@ get lowPass(){
 set lowPass(value){
     this._lowPass = value;
     audio.bassNode.gain.setValueAtTime(this._lowPass/2 * 100, audio.audioCtx.currentTime);
+    //bassSlider.value = value;
+    //bassLabel.innerHTML = Math.round((e.target.value/2 * 400));
 },
 
 get highPass(){
@@ -231,7 +240,7 @@ const setupUI = (canvasElement, audioFiles) =>{
 
 
 
-/*
+
   // A - hookup fullscreen button
   const fsButton = document.querySelector("#fs-button");
   const playButton = document.querySelector("#play-button");
@@ -268,8 +277,8 @@ const setupUI = (canvasElement, audioFiles) =>{
   }
 
   //hookup volume slider and label
-  let volumeSlider = document.querySelector("#volume-slider");
-  let volumeLabel = document.querySelector("#volume-label");
+  volumeSlider = document.querySelector("#volume-slider");
+  volumeLabel = document.querySelector("#volume-label");
 
   //add oninput event
 	volumeSlider.oninput = e =>{
@@ -283,8 +292,8 @@ const setupUI = (canvasElement, audioFiles) =>{
     volumeSlider.dispatchEvent(new Event("input"));
 
     //hookup volume slider and label
-  let bassSlider = document.querySelector("#bass-slider");
-  let bassLabel = document.querySelector("#bass-label");
+    bassSlider = document.querySelector("#bass-slider");
+    bassLabel = document.querySelector("#bass-label");
 
   //add oninput event
 	bassSlider.oninput = e =>{
@@ -319,25 +328,28 @@ const setupUI = (canvasElement, audioFiles) =>{
         audio.loadSoundFile(e.target.value);
         //pause the current track if it is playing
         if(drawParams.playing == true){
-           playAudio();
+            audio.playCurrentSound();
+            drawParams.playing = true;
         }
     }
     
-    let gradientCheckBox = document.querySelector("#gradient-check");
-    gradientCheckBox.onclick = e =>{
+    let backEyesCheckBox = document.querySelector("#back-eyes-check");
+    backEyesCheckBox.onclick = e =>{
         
         drawParams.backEyes = e.target.checked;
        
     }
-    
-    gradientCheckBox.dispatchEvent(new Event("click"));
+    backEyesCheckBox.checked = true;
+    backEyesCheckBox.dispatchEvent(new Event("click"));
    
-    let circleCheckBox = document.querySelector("#circles-check");
-    circleCheckBox.onclick = e =>{
+    let frontEyesCheckBox = document.querySelector("#front-eyes-check");
+    frontEyesCheckBox.onclick = e =>{
         
         drawParams.frontEyes = e.target.checked;
        console.log(drawParams.frontEyes);
     }
+    frontEyesCheckBox.checked = true;
+    frontEyesCheckBox.dispatchEvent(new Event("click"));
 
     let hornsCheckBox = document.querySelector("#horns-check");
     hornsCheckBox.onclick = e =>{
@@ -345,7 +357,7 @@ const setupUI = (canvasElement, audioFiles) =>{
         drawParams.horns = e.target.checked;
        console.log(drawParams.horns);
     }
-    
+    hornsCheckBox.checked = true;
    hornsCheckBox.dispatchEvent(new Event("click"));
 
    let barsCheckBox = document.querySelector("#bars-check");
@@ -354,7 +366,7 @@ const setupUI = (canvasElement, audioFiles) =>{
         drawParams.showBars = e.target.checked;
        
     }
-    
+    barsCheckBox.checked = true;
    barsCheckBox.dispatchEvent(new Event("click"));
 
    
@@ -365,7 +377,7 @@ const setupUI = (canvasElement, audioFiles) =>{
         drawParams.showNoise = e.target.checked;
        
     }
-    noiseCheckBox.checked = false;
+    noiseCheckBox.checked = true;
     noiseCheckBox.dispatchEvent(new Event("click"));
 
     let invertCheckBox = document.querySelector("#invert-check");
@@ -374,33 +386,25 @@ const setupUI = (canvasElement, audioFiles) =>{
         drawParams.showInvert = e.target.checked;
        
     }
-    invertCheckBox.checked = false;
+    invertCheckBox.checked = true;
     invertCheckBox.dispatchEvent(new Event("click"));
 
     let embossCheckBox = document.querySelector("#emboss-check");
    embossCheckBox.onclick = e =>{
         
         drawParams.showEmboss = e.target.checked;
+        gui
+        controllerObject.showEmboss = e.target.checked;
        
     }
-    embossCheckBox.checked = false;
+    embossCheckBox.checked = true;
     embossCheckBox.dispatchEvent(new Event("click"));
 
-    let frequencySelector = document.querySelector("#frequency-select");
-    frequencySelector.checked = true;
-    let waveformSelector = document.querySelector("#waveform-select");
-    frequencySelector.onclick = () =>
-    {
-        visualizationType = "frequency";
-        waveformSelector.checked = false;
+    let visualizationTypeSelector = document.querySelector("#visualization-type");
+    visualizationTypeSelector.onchange = e =>{
+        visualizationType = e.target.value;
     }
-
     
-    waveformSelector.onclick = () =>{
-        visualizationType = "waveform"
-        frequencySelector.checked = false;
-    }
-    */
     
 } // end setupUI
 
