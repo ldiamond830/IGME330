@@ -6,4 +6,4 @@
 
 4. I'd give myself a 7.5/15 on the aesthetics because I think I did create an interesting visual theme and make use of some advanced canvas concepts like translate(), rotate(), and arcTo() but the way I transformed them using the audio was pretty basic and not all of my elements fit together as well as they could 
 
-5. datGUI controls were implimented as part of my honors option for this class but standard controls were left in to comply with assignment requiring program to build off PE-06
+5. datGUI controls were implimented as part of my honors option for this class but standard controls were left in to comply with assignment requiring program to build off PE-06. The two control sets aren't able to work together as 
