@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Audio Visualizer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js" integrity="sha256-HJ7j+71YYw6Kcs8THwQV9lXmPOcR0eXlg7n8KRTZsyA=" crossorigin="anonymous"></script>
+  <link href="./styles/default-styles.css" type="text/css" rel="stylesheet" />
+  <script src="./src/loader.js" type="module"></script>
+</head>
+<body>
+<main>
+  <canvas width="800" height="400"></canvas>
+  <div id="controls">
+    <section>
+      <button id="play-button" data-playing="no"></button>
+      <button id="fs-button">Full Screen</button>
+		
+      <label>Track: 
+        <select id="track-select">
+          <option value="media/New Adventure Theme.mp3" selected>New Adventure Theme</option>
+          <option value="media/Peanuts Theme.mp3">Peanuts Theme</option>
+          <option value="media/The Picard Song.mp3">The Picard Song</option>
+        </select>
+      </label>
+    </section>
+		
+    <section>
+      Volume: <input type="range" id="volume-slider" min="0" max="2" value="1" step="0.01">
+      <span id="volume-label">???</span>
+      Lowpass Filter: <input type="range" id="bass-slider" min="0" max="0.5" value="0.25" step="0.01">
+      <span id="bass-label">???</span>
+      Highpass Filter: <input type="range" id="treble-slider" min="0" max="0.5" value="0.25" step="0.01">
+      <span id="treble-label">???</span>
+    </section>
+    <section>
+        <span><input type="checkbox" id="back-eyes-check"><label for="back-eyes-check">Show Back Eyes</label></span>
+        <span><input type="checkbox" id="bars-check"><label for="bars-check">Show Mouth</label></span>
+        <span><input type="checkbox" id="front-eyes-check"><label for="front-eyes-check">Show Front Eyes</label></span>
+        <span><input type="checkbox" id="horns-check"><label for="horns-check">Show horns</label></span>
+       
+        <span><input type="checkbox" id="noise-check"><label for="noise-check">Show Noise</label></span>
+        <span><input type="checkbox" id="invert-check"><label for="invert-check">Invert Colors</label></span>
+        <span><input type="checkbox" id="emboss-check"><label for="emboss-check">Emboss</label></span>
+        <br>
+        <br>
+        <label>Visualization Type: 
+          <select id="visualization-type">
+            <option value="frequency" selected>frequency</option>
+            <option value="waveform">waveform</option>
+          </select>
+        </label>
+        <!--
+        <input type="radio" id="frequency-select" value="frequency">
+        <label for="frequency-select">visualize by frequency</label><br>
+        <input type="radio" id="waveform-select" value="waveform">
+        <label for="waveform-select">visualize by waveform</label><br>
+        -->
+      </section>
+    
+  </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+1. I added highpass and lowpass filter nodes which are interactable in the UI
+
+2. My sprite class is called hornSprite and it will draw a triangle when it's created it will draw a triangle with a preset size and then translate it to a specified location and rotate it one of two directions based on a parameter. When the sprite is updated it will change the color's hue based on the track time and vary the saturation based on the audio data being input, either frequency or wave length
+
+3. My JSON file contains the title of my app, the file path and track names of my three song options, and the file path for background image to be loaded in
+
+4. I'd give myself a 7.5/15 on the aesthetics because I think I did create an interesting visual theme and make use of some advanced canvas concepts like translate(), rotate(), and arcTo() but the way I transformed them using the audio was pretty basic and not all of my elements fit together as well as they could 
+
+5. datGUI controls were implimented as part of my honors option for this class but standard controls were left in to comply with assignment requiring program to build off PE-06. The two control sets aren't able to work together as 
