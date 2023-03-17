@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Exam #2 - Practice B</title>
+  <style>
+    canvas {
+		  border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<h1>Exam #2 - Practice B</h1>
+<canvas width="400" height="300"></canvas>
+<script>
+  "use strict";
+  
+  const ctx = document.querySelector("canvas").getContext("2d");
+  
+  // Exam #1 questions (you should still know how to do for exam #2)
+ 
+  // 1 - Write canvas code that will draw a 10-pixel wide green line from (200,200) to (200,400)
+  ctx.beginPath()
+  ctx.lineWidth = 10;
+  ctx.moveTo(200,200);
+  ctx.lineTo(200,400);
+  ctx.closePath();
+  ctx.strokeStyle = 'green';
+  ctx.stroke();
+  // 2 - Write canvas code that will fill a 50-pixel radius circle with a solid red color. The circle is centered at (100,100)
+  ctx.fillStyle = 'red';
+  ctx.beginPath();
+  ctx.arc(100,100,50,0,Math.PI * 2,false);
+  ctx.closePath();
+  ctx.fill();
+  // 3 - And similar for a rectangle, building a path manually, without using fillRect() or strokeRect()
+ctx.beginPath();
+ctx.rect(200,100, 50, 50);
+ctx.closePath();
+ctx.fill();
+
+	 // Here are some new canvas questions
+	 
+	/*
+	4) Without using fillRect() or strokeRect(), draw a 30 x 30 pixel square at (100,100).
+	Fill the square with a solid red color, and rotate it 45 degrees to the right on its
+	center axis.
+	*/
+    ctx.beginPath();
+    ctx.translate(100,100);
+    ctx.rotate(0.785);
+    ctx.rect(100,100,30,30);
+    ctx.closePath();
+    ctx.fill();
+	/*
+	5) Implement the following helper function. Don't forget about our best
+	practice of using save() and restore()
+	*/
+	const drawCircle = (x,y,radius,fillStyle,scaleX,scaleY) => {
+		// YOU WRITE THE REST
+        ctx.save();
+        ctx.fillStyle = fillStyle;
+        ctx.translate(x,y)
+        ctx.scale(scaleX,scaleY);
+        
+        ctx.beginPath()
+        ctx.arc(0,0,radius,0,Math.PI * 2, false);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+	};
+	
+	drawCircle(50, 50, 10, "blue", 42 ,2);
+	
+  </script>
+
+
+</body>
+</html>
