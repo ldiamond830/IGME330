@@ -1,17 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Exam #2 - Practice B</title>
+  <style>
+    canvas {
+		  border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<h1>Exam #2 - Practice B</h1>
+<canvas width="400" height="300"></canvas>
 <script>
-let a = 10;
-let b = 0;
-let c;
-let d = "Buddy";
-console.log(d + a);
-console.log(d + c);
-console.log(d - a);
-console.log(d * a);
-console.log(a + c);
-if("false") console.log("TRUE");
+ let a = { name: "Adam" };
+let b = { name: "Bob" };
+let people = {a,b}; // shorthand property initialization
+Object.freeze(people)
+console.log(people);
+people.c = { name: "Charles" };
+console.log(people);
+people.a.name = "Andy";
+people.b.name = "Burt";
+console.log(people);
+  </script>
 
-function doubleIt(num){
-return num * 2;
-}
-console.log(doubleIt());
-</script>
+
+</body>
+</html>
