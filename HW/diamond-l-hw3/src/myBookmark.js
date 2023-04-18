@@ -23,18 +23,18 @@ const template = document.createElement("template");
           line-height: normal;
         }
         </style>
-       <div class="has-background-link pl-1 pr-1">
+       <div id = "favorite" class="has-background-link pl-1 pr-1">
         <span id = "link" class = "is-family-sans-serif">
           <a target="_blank" href="" class="has-text-light">???</a>
         </span>
         <span id = "buttons">
-          <button class = "button is-success is-small">
+          <button class = "button is-success is-small" disabled>
             <span class = "icon is-small">
               <i class= "fas fa-check"></i>
             </span>
             <span>Favorite</span>
           </button>
-          <button class = "button is-warning is-small">
+          <button id = "delete-btn" class = "button is-warning is-small">
             <span>Delete</span>
             <span class="icon is-small>
               <i class = "fas fa-times"></i>
@@ -51,7 +51,6 @@ const template = document.createElement("template");
       this._text = "RIT";
       this._url = "https://www.rit.edu/";
       this._comments = "No comments found"
-      this._fid = crypto.randomUUID();
       this.attachShadow({mode: "open"});
       this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
@@ -65,6 +64,13 @@ const template = document.createElement("template");
 
     // called when the component is inserted into the DOM
     connectedCallback(){
+
+      this.shadowRoot.querySelector("#delete-btn").onclick = () =>{
+        this.callback(this.fid);
+      //removes element frm dom
+       this.parentElement.remove(this)
+      }
+
       this.render();
     }
 

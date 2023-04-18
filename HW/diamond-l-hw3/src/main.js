@@ -97,12 +97,14 @@ const clearFormFields = (evt) =>{
   return false
 }
 
-const createBookMarkComponent = (text, url, comments) =>{
+const createBookMarkComponent = (text, url, comments, fid) =>{
   const newBookmark = document.createElement("my-bookmark");
 
         newBookmark.dataset.text = text;
         newBookmark.dataset.url =url;
         newBookmark.dataset.comments = comments;
+        newBookmark.callback = deleteFavorite;
+        newBookmark.fid = fid;
          
 
         const newLI = document.createElement("li");
@@ -113,9 +115,22 @@ const createBookMarkComponent = (text, url, comments) =>{
 
 }
 
+const deleteFavorite = (fid) =>{
+
+  console.log("deleting")
+//modification of implimentation found at: https://sentry.io/answers/remove-specific-item-from-array/
+  for(let i = 0; i < favorites.length; i++){
+    if(favorites[i].fid === fid){
+      favorites.splice(i, 1);
+    }
+  }
+  
+  favoritesCounter.innerHTML = `Number of favorites: ${favorites.length}`
+}
+
 const loadFavoritesFromStorage = () =>{
   for(let favorite of favorites){
-    createBookMarkComponent(favorite.text, favorite.url, favorite.comments);
+    createBookMarkComponent(favorite.text, favorite.url, favorite.comments, favorite.fid);
   }
   favoritesCounter.innerHTML = `Number of favorites: ${favorites.length}`
 }
