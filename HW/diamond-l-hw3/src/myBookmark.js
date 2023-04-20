@@ -104,6 +104,7 @@ const template = document.createElement("template");
         a.title = this._comments;
       }
     }
+    
   }
 
   customElements.define('my-bookmark', MyBookmark);

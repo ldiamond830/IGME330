@@ -21,17 +21,11 @@
     }
   </style>
   <script src = "src/main.js" type = "module"></script>
+  <script src = "src/hero.js" type = "module"></script>
 </head>
 
 <body>
-  <header class="hero is-small is-primary is-bold p-2">
-    <div class="hero-body">
-      <div class = "container">
-        <h1 class="title">HW-3 - Link Buddy!</h1>
-        <h2 class="subtitle">Save your links for later!</h2>
-      </div>
-    </div>
-  </header>
+<my-header data-title="HW-3-Link Buddy!" data-subtitle="Save your links for later!"></my-header>  
 
     <div class = "columns section has-background-light">
       <div class="column"> <!--Left Column-->
@@ -47,19 +41,19 @@
         <div class="field">
           <label class="label">Text</label>
           <div class = "control">
-            <input id="favorite-text" class="input" type="text" placeholder="Name of Link" size="30" required>
+            <input id="favorite-text" class="input" type="text" placeholder="Name of Link" size="30">
           </div>
         </div>
   <div class="field">
     <label class = "label">URL</label>
     <div class="control">
-      <input id="favorite-url" class="input" type="url" placeholder="https://example" pattern="https://.*" size="30" required>
+      <input id="favorite-url" class="input" type="url" placeholder="https://example" size="30">
     </div>
   </div>
   <div class="field">
     <label class="label">Comments</label>
     <div class="control">
-      <input id="favorite-comments" class="input" type="text" placeholder="comments" size="30" required>
+      <input id="favorite-comments" class="input" type="text" placeholder="comments" size="30">
     </div>
   </div>
   <div class="field is-grouped">
@@ -72,9 +66,13 @@
       <button id="favorite-cancel-button" class="button is-warning">
         Cancel
       </button>
+      
             </div>
+            
           </div>
+          <span id= "missing-text" class = "has-text-danger" >Missing Fields</span>
         </form>
+       
       </div>
     </div>
   </body>

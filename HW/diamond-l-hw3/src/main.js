@@ -1,5 +1,6 @@
 import {MyBookmark} from "./myBookmark.js";
 import { favorite } from "./favorite.js";
+import * as storage from "./storage.js"
 /*
 const bookmarks = [
     {
@@ -52,7 +53,10 @@ const bookmarks = [
 let favorites = [];
 let favoritesCounter;
 let favoriteCount;
+let missingText;
 
+
+//checks if all fields are filled and if so creates a new favorite
 const submitClicked = (evt) =>{
   console.log("submitClicked");
   evt.preventDefault();
@@ -67,23 +71,36 @@ const submitClicked = (evt) =>{
   }
 
   if(valuesPresent){
-    createBookMarkComponent(document.querySelector("#favorite-text").value, document.querySelector("#favorite-url").values, document.querySelector("#favorite-comments").value)
+    createBookMarkComponent(document.querySelector("#favorite-text").value.trim(), document.querySelector("#favorite-url").value.trim(), document.querySelector("#favorite-comments").value.trim());
+    favoritesCounter.innerHTML = `Number of favorites: ${favorites.length}`
+    storage.setFavorites(favorites);
 
+    if( missingText.style.visibility == "visible"){
+      missingText.style.visibility = "hidden"
+    }
+    for(let inputBox of inputBoxes){
+     inputBox.value = "";
+    }
   }
   else{
     console.log("error missing values")
+    missingText.style.visibility = "visible"
   }
   
   return false;
 }
 
+//sets necesarry UI functionality and values for later reference
 const setupUI = () =>{
   document.querySelector("#favorite-submit-button").onclick = submitClicked;
   document.querySelector("#favorite-cancel-button").onclick = clearFormFields;
   favoritesCounter = document.querySelector("#favorites-counter");
+  missingText = document.querySelector("#missing-text")
+  missingText.style.visibility = "hidden";
   
 }
 
+//clears all input boxes
 const clearFormFields = (evt) =>{
   console.log("cancel clicked");
 
@@ -97,15 +114,18 @@ const clearFormFields = (evt) =>{
   return false
 }
 
-const createBookMarkComponent = (text, url, comments, fid) =>{
+//helper method for making a new bookmark based on favorite class
+const createBookMarkComponent = (text, url, comments) =>{
+  let fav = new favorite(text, url, comments);
+  favorites.push(fav);
+
   const newBookmark = document.createElement("my-bookmark");
 
-        newBookmark.dataset.text = text;
-        newBookmark.dataset.url =url;
-        newBookmark.dataset.comments = comments;
+        newBookmark.dataset.text = fav.text;
+        newBookmark.dataset.url = fav.url;
+        newBookmark.dataset.comments = fav.comments;
         newBookmark.callback = deleteFavorite;
-        newBookmark.fid = fid;
-         
+        newBookmark.fid = fav.fid;
 
         const newLI = document.createElement("li");
         newLI.appendChild(newBookmark);
@@ -115,6 +135,7 @@ const createBookMarkComponent = (text, url, comments, fid) =>{
 
 }
 
+//deletes favorite from array and resets local storage
 const deleteFavorite = (fid) =>{
 
   console.log("deleting")
@@ -124,26 +145,21 @@ const deleteFavorite = (fid) =>{
       favorites.splice(i, 1);
     }
   }
-  
+  storage.setFavorites(favorites);
+
   favoritesCounter.innerHTML = `Number of favorites: ${favorites.length}`
 }
-
+//loads initial favorites from storage and displays them
 const loadFavoritesFromStorage = () =>{
-  for(let favorite of favorites){
-    createBookMarkComponent(favorite.text, favorite.url, favorite.comments, favorite.fid);
+const temp = storage.getFavorites();
+
+  for(let favorite of temp){
+    createBookMarkComponent(favorite.text, favorite.url, favorite.comments);
   }
   favoritesCounter.innerHTML = `Number of favorites: ${favorites.length}`
 }
 
 window.onload = () => {
-  setupUI();
-favorites.push(new favorite("RIT", "https://www.rit.edu", "A private university located near Rochester, NY."));
+setupUI();
 loadFavoritesFromStorage();
-
-
-
-
-
-
-
 }
