@@ -93,6 +93,8 @@ const template = document.createElement("template");
       this.render();
     }
 
+    
+
     // helper method
     render(){
       //this.innerHTML = `<span><a href="${this._url}">${this._text}</a></span>`;

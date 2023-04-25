@@ -5,7 +5,7 @@ import * as ajax from "./ajax.js";
 // NB - it's easy to get [longitude,latitude] coordinates with this tool: http://geojson.io/
 const lnglatNYS = [-75.71615970715911, 43.025810763917775];
 const lnglatUSA = [-98.5696, 39.8282];
-
+let geojson;
 
 // II. Functions
 const setupUI = () => {
@@ -29,9 +29,20 @@ const setupUI = () => {
 	}
 }
 
+const showFeatureDetails = (id) => {
+	console.log(`showFeatureDetails - id=${id}`);
+	const feature = getFeatureById(id);
+	document.querySelector("#details-1").innerHTML = `Info for ${feature.properties.title}`;
+};
+
 const init = () => {
 	map.initMap(lnglatNYS);
-	setupUI();
+	ajax.downloadFile("data/parks.geojson", (str) => {
+		geojson = JSON.parse(str);
+		console.log(geojson)
+		map.addMarkersToMap(geojson, showFeatureDetails);
+		setupUI();
+	});
 };
 
 init();

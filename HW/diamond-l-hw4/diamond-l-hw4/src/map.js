@@ -51,7 +51,7 @@ const addMarker = (feature, className, clickHandler) => {
 
 	//HTML for the pop up
 	const html = `<b>${feature.properties.title}</b>
-				 <p>${feature.properties.address}</p>`;
+				 <p>${feature.properties.address}<br>phone: ${feature.properties.phone}</p>`;
 
 	//add marker and pop up to map
 	const marker = new mapboxgl.Marker(element)
@@ -64,7 +64,13 @@ const addMarker = (feature, className, clickHandler) => {
 }
 
 // III. "public" - will be exported
+const addMarkersToMap = (json, clickHandler) =>{
+	geojson = json;
 
+	for(const feature of geojson.features){
+		addMarker(feature, "poi", clickHandler);
+	}
+}
 
 const flyTo = (center = [0,0]) => {
 	//https://docs.mapbox.com/mapbox-gl-js/api/#map#flyto
@@ -83,4 +89,4 @@ const setPitchAndBearing = (pitch=0,bearing=0) => {
 	map.setBearing(bearing);
 };
 
-export { initMap, flyTo, setZoomLevel, setPitchAndBearing };
+export { initMap, flyTo, setZoomLevel, setPitchAndBearing, addMarkersToMap };
