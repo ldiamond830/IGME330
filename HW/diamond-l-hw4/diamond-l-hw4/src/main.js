@@ -1,6 +1,6 @@
 import * as map from "./map.js";
 import * as ajax from "./ajax.js";
-
+import * as storage from "./storage.js"
 // I. Variables & constants
 // NB - it's easy to get [longitude,latitude] coordinates with this tool: http://geojson.io/
 const lnglatNYS = [-75.71615970715911, 43.025810763917775];
