@@ -46,6 +46,25 @@ const getFeatureById = (id) =>
 	return geojson.features.find(value => value.id = id);
 }
 
+const createFavoriteElement = (id) =>{
+	const feature = getFeatureById(id);
+	const a = document.createElement('a');
+	a.className = "panel-block";
+	a.id = feature.id;
+
+	a.onclick = () =>{
+		showFeatureDetails(a.id);
+		map.setZoomLevel(6);
+		map.flyTo(feature.geometry.coordinates);
+	};
+	a.innerHTML = `<span class = "panel-icon">
+					<i class = "fas fa-map-pin"></i>
+	</span> ${feature.properties.title}
+	`;
+
+	return a;
+}
+
 const showFeatureDetails = (id) => {
 	console.log(`showFeatureDetails - id=${id}`);
 	const feature = getFeatureById(id);
@@ -66,8 +85,10 @@ const init = () => {
 		geojson = JSON.parse(str);
 		console.log(geojson)
 		map.addMarkersToMap(geojson, showFeatureDetails);
+		refreshFavorites();
 		setupUI();
 	});
+	
 };
 
 init();
