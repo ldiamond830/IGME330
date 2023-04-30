@@ -1,7 +1,7 @@
 // I. Variables & constants
 const accessToken = "pk.eyJ1IjoibGdkMTY0OSIsImEiOiJjbGc2dXV3am4wMDJmM2RtYjQ0dDZhOTVmIn0.s9BEYPK3Ecx4hYMCP9T55w";
 let map;
-
+/*
 // An example of how our GeoJSON is formatted
 // This will be replaced by the GeoJSON loaded from parks.geojson
 let geojson = {
@@ -25,7 +25,7 @@ let geojson = {
 		}
 	}]
 };
-
+*/
 // II. "private" - will not be exported
 const initMap = (center) => {
 	mapboxgl.accessToken = accessToken;
@@ -39,8 +39,8 @@ const initMap = (center) => {
 	map.addControl(new mapboxgl.NavigationControl({showCompass:false}));
 
 	// test
-	const clickHandler = (id) => alert(`${id} was clicked!`);
-	addMarker(geojson.features[0], "poi", clickHandler);
+	//const clickHandler = (id) => alert(`${id} was clicked!`);
+	//addMarker(geojson.features[0], "poi", clickHandler);
 };
 
 const addMarker = (feature, className, clickHandler) => {
@@ -61,13 +61,13 @@ const addMarker = (feature, className, clickHandler) => {
 	.addTo(map);
 
 	element.addEventListener("click", () => clickHandler(marker._element.id));
+	
 }
 
 // III. "public" - will be exported
 const addMarkersToMap = (json, clickHandler) =>{
-	geojson = json;
 
-	for(const feature of geojson.features){
+	for(const feature of json.features){
 		addMarker(feature, "poi", clickHandler);
 	}
 }

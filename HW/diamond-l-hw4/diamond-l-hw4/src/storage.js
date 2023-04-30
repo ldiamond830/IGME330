@@ -4,7 +4,7 @@ const defaultData = {
     "version": .01, // not using, but we can see it in localStorage
     "favorites": []
   },
-  storeName = "lgd1649-HW3-data";
+  storeName = "lgd1649-HW4-data";
   
   const readLocalStorage = () => {
     let allValues = null;
